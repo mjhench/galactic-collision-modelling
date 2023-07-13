@@ -3,4 +3,4 @@ In this project, I used Python to model the collision of the Antennae Galaxies (
 
 Note: I received permission from the course professor and my group members to post this code.
 
-Credit to [@ssimonai](https://github.com/ssimonai) for the leapfrog integration code.
+Credit to [@ssimonai](https://github.com/ssimonai) for the leapfrog integration code and for helping debug the code.
