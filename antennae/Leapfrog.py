@@ -22,13 +22,9 @@ def main(galaxy_1, galaxy_2):
 
     # copy values over from particle objects to arrays above
     for i in range(n):
-        x[0, i] = all_particles[i].get_pos()[0]
-        x[1, i] = all_particles[i].get_pos()[1]
-        x[2, i] = all_particles[i].get_pos()[2]
-        v[0, i] = all_particles[i].get_vel()[0]
-        v[1, i] = all_particles[i].get_vel()[1]
-        v[2, i] = all_particles[i].get_vel()[2]
-        m[i] = all_particles[i].get_mass()
+        x[:, i] = all_particles[i].pos
+        v[:, i] = all_particles[i].vel
+        m[i] = all_particles[i].mass
 
     # open text file to store all values
     f = open("data/leapstep_latest.csv", "w")
@@ -37,15 +33,16 @@ def main(galaxy_1, galaxy_2):
     for step in tqdm(range(nstep)):  # loop nstep times
         if step % nout == 0:  # if time to output state
             for i in range(n):  # loop over all points...
-                f.write(f"{tnow},{i},{x[0][i]},{x[1][i]},{x[2][i]},{v[0][i]},{v[1][i]},{v[2][i]}\n")
+                f.write(f"{tnow},{i},{x[0, i]},{x[1, i]},{x[2, i]},{v[0, i]},{v[1, i]},{v[2, i]}\n")
         leapstep(x, v, n, m, dt)  # take integration step
         tnow += dt  # and update value of time
     if nstep % nout == 0:  # if last output wanted
         for i in range(n):  # loop over all points...
-            f.write(f"{tnow},{i},{x[0][i]},{x[1][i]},{x[2][i]},{v[0][i]},{v[1][i]},{v[2][i]}\n")
+            f.write(f"{tnow},{i},{x[0, i]},{x[1, i]},{x[2, i]},{v[0, i]},{v[1, i]},{v[2, i]}\n")
 
     # close file
     f.close()
+
 
 def leapstep(x, v, n, m, dt):
     """LEAPSTEP: take one step using the leapfrog integrator, formulated
@@ -65,6 +62,7 @@ def leapstep(x, v, n, m, dt):
     a = accel(x, n, m)
     v += 0.5 * dt * a  # and complete vel. step
 
+
 def accel(x, n, m):
     """ACCEL: compute accelerations for orbiting particles
 
@@ -74,17 +72,15 @@ def accel(x, n, m):
         m (int): mass of points
     """
     rmin = 25
-    G = 1  # 7.0291146e-36  # gravitational constant in units of kpc, 1e8 years, solar mass
+    G = 1  # gravitational constant in units of kpc, 1e8 years, solar mass
     eps = 0.2 * rmin  # softening parameter
 
     a = np.zeros((3, n))
 
     # calculate particle--core interactions
-    # r: 3 x n
-    # x: 3 x n
     for i_core in [0, 343]:
         r = x - x[:, i_core][..., np.newaxis]
-        a += -G * m[i_core] / (((r**2).sum(axis=0) + eps**2) ** (3 / 2)) * r
+        a += -G * m[i_core] / (((r ** 2).sum(axis=0) + eps ** 2) ** (3 / 2)) * r
 
     return a
 

@@ -1,0 +1,11 @@
+
+.idea/galactic-collision-modelling.iml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/other.xml
+.idea/vcs.xml
+antennae/__pycache__/Galaxy.cpython-310.pyc
+antennae/__pycache__/GalaxyTools.cpython-310.pyc
+antennae/__pycache__/Leapfrog.cpython-310.pyc
+antennae/__pycache__/Particle.cpython-310.pyc

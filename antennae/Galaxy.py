@@ -8,7 +8,7 @@ class Galaxy:
     A galaxy of particles in twelve concentric rings and a black hole in the center.
 
         Methods:
-            get_all_part()          : get list of all particles in the galaxy, starting with the black hole at the center
+            get_all_part()          : get list of all particles in the galaxy starting with the black hole at the center
             get_rings()             : get list of all rings in the galaxy
             get_num_part()          : get number of particles in the galaxy
             add_init_vel(vx, vy, vz): add initial velocities to the galaxy along the x, y, and z axes
@@ -40,7 +40,7 @@ class Galaxy:
             f"{self._name}:\n"
             f"    Number of rings: {self._num_rings}\n"
             f"    Number of particles: {self.get_num_part()}\n"
-            f"    Position of black hole: {self.black_hole.get_pos()}"
+            f"    Position of black hole: {self.black_hole.pos}"
         )
 
     @staticmethod
@@ -64,7 +64,7 @@ class Galaxy:
         pos = gt.cylindrical_to_xyz(r, azim, 0)
         pos_rot = gt.rotate(pos, theta=theta, axis=axis)
 
-        vel = gt.vel_init(G, black_hole.get_mass(), azim, r, 5)
+        vel = gt.vel_init(G, black_hole.mass, azim, r, 5)
         vel_rot = gt.rotate(vel, theta=theta, axis=axis)
 
         # create particle instances
@@ -128,7 +128,7 @@ class Galaxy:
         particles = self.get_all_part()
 
         for part in particles:
-            part.set_vel(part.get_vel() + np.array([vx, vy, vz]))
+            part.vel = part.vel + np.array([vx, vy, vz])
 
     def move_galaxy(self, dx, dy, dz):
         """
@@ -156,11 +156,11 @@ class Galaxy:
         # plot rings
         for ring in self._rings:
             for part in ring:
-                ax.scatter(part.get_pos()[0], part.get_pos()[1], part.get_pos()[2], c="r", s=10)
+                ax.scatter(part.pos[0], part.pos[1], part.pos[2], c="r", s=10)
 
         # plot black hole
         ax.scatter(
-            self.black_hole.get_pos()[0], self.black_hole.get_pos()[1], self.black_hole.get_pos()[2], c="b", s=100
+            self.black_hole.pos[0], self.black_hole.pos[1], self.black_hole.pos[2], c="b", s=100
         )
 
         # make graph nice
