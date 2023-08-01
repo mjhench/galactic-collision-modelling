@@ -1,6 +1,6 @@
 import numpy as np
 from antennae.Particle import Particle
-from antennae.GalaxyTools import GalaxyTools as gt
+from antennae import GalaxyTools as gt
 
 
 class Galaxy:
